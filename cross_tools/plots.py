@@ -837,24 +837,6 @@ class Plots:
                 combined_handles.append(h)
                 combined_labels.append(self.models.get(m, m))
         
-        # 2. Line-group entries  (black line + marker + linestyle)
-        if ncols==1:
-            for il, lid in enumerate(line_ids):
-                marker = marker_cycle[il % len(marker_cycle)]
-                ls     = line_styles[il % len(line_styles)]
-            
-                h = Line2D(
-                    [], [],
-                    linestyle=ls,
-                    color='DARKGREY',
-                    marker='None',
-                    markersize=8,
-                    linewidth=1.5,
-                )
-            
-                combined_handles.append(h)
-                combined_labels.append(lid)
-        
         # ---- Draw combined legend ----
         ax.legend(
             combined_handles,
