@@ -1291,6 +1291,7 @@ class Plots:
                 else:
                     ax.legend(proxies, names, loc=pos_legend, ncol=1)
     
+            ax.set_axisbelow(True)
             plt.savefig(self.folder_plots + "/" + fileName + ".pdf", bbox_inches="tight")
             plt.savefig(self.folder_plots + "/" + fileName + ".png", bbox_inches="tight", dpi=300)
             plt.show()
@@ -1364,6 +1365,8 @@ class Plots:
     
                 ax.spines["right"].set_visible(False)
                 ax.spines["top"].set_visible(False)
+
+            ax.set_axisbelow(True)
     
         if legend:
             proxies = [Patch(facecolor=colors[nm], edgecolor="none") for nm in names]
