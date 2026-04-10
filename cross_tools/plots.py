@@ -11,6 +11,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import seaborn as sb
 from matplotlib.patches import Patch
+import matplotlib.lines as mlines
 import matplotlib.ticker as ticker
 import inspect
 import os
@@ -1086,7 +1087,7 @@ class Plots:
     
         return names, colors, mats
     
-    def _draw_stacks(self,ax, orientation, pos_bar, names, colors, mats, vec_getter, signed, bar_width=0.3):
+    def _draw_stacks(self,ax, orientation, pos_bar, names, colors, mats, vec_getter, signed, bar_width=0.3, plot_net=False):
         if orientation == "vertical":
             barfunc = ax.bar
             stack_key = "bottom"
@@ -1116,9 +1117,13 @@ class Plots:
                     zorder=1, label=nm, **{stack_key: off_pos})
             barfunc(pos_bar, neg_vals, bar_width, color=colors[nm], edgecolor="none",
                     zorder=1, **{stack_key: off_neg})
+            
     
             off_pos += pos_vals
             off_neg += neg_vals
+
+        if plot_net:
+            ax.plot(pos_bar, off_pos+off_neg, marker="*", linestyle="", color="#FFA600")
     
     def _plot_stacked_engine_mi(
             self,
@@ -1167,8 +1172,17 @@ class Plots:
     
             def vec_getter(nm):
                 return flatten(mats[nm])
+            
+            if (
+                signedVarList is not None
+                and "Imports" in [var["name"] for var in signedVarList]
+                and "Exports" in [var["name"] for var in signedVarList]
+            ):
+                plot_net = True
+            else:
+                plot_net = False
     
-            self._draw_stacks(ax, orientation, pos_bar, names, colors, mats, vec_getter, signed=signed)
+            self._draw_stacks(ax, orientation, pos_bar, names, colors, mats, vec_getter, signed=signed, plot_net=plot_net)
     
             if orientation == "vertical":
                 if signed:
@@ -1260,6 +1274,18 @@ class Plots:
     
             if legend:
                 proxies = [Patch(facecolor=colors[nm], edgecolor="none") for nm in names]
+                if plot_net:
+                    names.append("Net")
+                    colors["Net"] = "#FFA600"
+                    yellow_star = mlines.Line2D(
+                        [],
+                        [],
+                        color="#FFA600",
+                        marker="*",
+                        markersize=8,
+                        linestyle="",
+                    )
+                    proxies.append(yellow_star)
                 if isinstance(pos_legend, dict):
                     ax.legend(proxies, names, **pos_legend)
                 else:
