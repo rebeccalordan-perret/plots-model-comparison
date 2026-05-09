@@ -36,7 +36,11 @@ class Plots:
         # Get the models names
         self.models = {f['id']: f['name'] for f in model_list}
         self.modelsid = [ f['id'] for f in model_list ]
-        self.model_colors = [ f['color'] for f in model_list ]
+        
+        # PG41 May9
+        # self.model_colors = [ f['color'] for f in model_list ]
+        self.model_colors = { f['id']:f['color'] for f in model_list }
+        
         self.typicalDays = {}
         self.typicalDays['summer'] = {
                                     'name':  {f['id']: f['summer'] for f in model_list},
@@ -724,12 +728,18 @@ class Plots:
         # Simple color mapping for models
         # If you already have self.modelColors, you can replace this.
         color_cycle = plt.rcParams["axes.prop_cycle"].by_key()["color"]
-        model_colors = {}
-        for i, m in enumerate(listModelsid):
-            if hasattr(self, "model_colors"):
-                model_colors[m] = self.model_colors[i]
-            else:
-                model_colors[m] = color_cycle[i % len(color_cycle)]
+        
+        # PG41 May 9
+        if hasattr(self, "model_colors"):
+            model_colors = self.model_colors
+        else:
+            model_colors = {m: color_cycle[i % len(color_cycle)] for i,m in enumerate(listModelsid)}
+        # model_colors = {}
+        # for i, m in enumerate(listModelsid):
+        #     if hasattr(self, "model_colors"):
+        #         model_colors[m] = self.model_colors[i]
+        #     else:
+        #         model_colors[m] = color_cycle[i % len(color_cycle)]
     
         # Some markers for different line_ids so they are distinguishable
         marker_cycle = ["o", "s", "^", "D", "v", "P", "X"]
