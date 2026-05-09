@@ -726,8 +726,8 @@ class Plots:
         color_cycle = plt.rcParams["axes.prop_cycle"].by_key()["color"]
         model_colors = {}
         for i, m in enumerate(listModelsid):
-            if hasattr(self, "modelColors") and m in self.modelColors:
-                model_colors[m] = self.modelColors[m]
+            if hasattr(self, "model_colors"):
+                model_colors[m] = self.model_colors[i]
             else:
                 model_colors[m] = color_cycle[i % len(color_cycle)]
     
