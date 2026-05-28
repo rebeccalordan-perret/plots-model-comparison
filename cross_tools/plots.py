@@ -861,6 +861,7 @@ class Plots:
     
         plt.tight_layout()
         plt.savefig(self.folder_plots + "/" + fileName+ ".pdf", bbox_inches="tight")
+        plt.savefig(self.folder_plots + "/" + fileName+ ".svg", bbox_inches="tight")
         plt.savefig(
             self.folder_plots + "/" + fileName + ".png",
             bbox_inches="tight",
@@ -1304,6 +1305,7 @@ class Plots:
             ax.set_axisbelow(True)
             plt.savefig(self.folder_plots + "/" + fileName + ".pdf", bbox_inches="tight")
             plt.savefig(self.folder_plots + "/" + fileName + ".png", bbox_inches="tight", dpi=300)
+            plt.savefig(self.folder_plots + "/" + fileName + ".svg", bbox_inches="tight")
             plt.show()
             return
     
